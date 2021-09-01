@@ -17,3 +17,18 @@ add_executable(hershensh hershensh.cpp ${HEADER_FILES})
 
 target_include_directories(hershensh 
   PUBLIC "${INCLUDE_DIR}")
+
+#-------------------------
+# Catch2 unittesting framework
+find_package(Catch2 REQUIRED)
+add_executable(runTests ${TEST_DIR}/test.cpp)
+target_include_directories(runTests 
+  PRIVATE "${INCLUDE_DIR}")
+target_link_libraries(runTests PRIVATE Catch2::Catch2WithMain)
+
+include(CTest)
+include(Catch)
+catch_discover_tests(runTests)
+#-------------------------
+
+
