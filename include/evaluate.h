@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace hershensh {
+namespace hersh {
 std::string eval(const std::string& line) {
   return line;
 }

@@ -4,9 +4,9 @@
 #include "printer.h"
 #include "reader.h"
 
-using namespace hershensh;
+using namespace hersh;
 
-const std::string defaultPrompt = "hershensh$";
+const std::string defaultPrompt = "hersh";
 
 bool isEOF() {
   return std::cin.eof();

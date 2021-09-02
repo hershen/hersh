@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-namespace hershensh {
+namespace hersh {
 
 std::string read(const std::string& prompt) {
   std::string line;
