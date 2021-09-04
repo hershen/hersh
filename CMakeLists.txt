@@ -26,8 +26,8 @@ FetchContent_Declare(
   GIT_SHALLOW    TRUE
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
 
-  # Catch2 main branch as of 2021-09-02. It's better if this is some tag, but the latest v3.0.0-preview3 has a bug where './runTests --list-tests --verbosity quiet' shows additional lines which are (wrongly) interpreted as tests.
-  GIT_TAG        9ac9fb164e5b20ad9e2f59556b75b9e6f1600f68 
+  # Catch2 main branch. It's better if this is some tag, but the latest v3.0.0-preview3 has a bug where './runTests --list-tests --verbosity quiet' shows additional lines which are (wrongly) interpreted as tests.
+  GIT_TAG        devel 
 )
 
 FetchContent_MakeAvailable(Catch2)
