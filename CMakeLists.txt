@@ -5,18 +5,20 @@ project(hersh)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(INCLUDE_DIR include)
-set(TEST_DIR tests)
+set(SOURCE_DIR hersh)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
-set(HEADER_FILES ${INCLUDE_DIR}/reader.h ${INCLUDE_DIR}/evaluate.h ${INCLUDE_DIR}/printer.h)
+set(HEADER_FILES ${SOURCE_DIR}/reader.hpp ${SOURCE_DIR}/evaluate.hpp ${SOURCE_DIR}/printer.hpp)
 
-add_executable(hersh hersh.cpp ${HEADER_FILES})
+add_executable(hersh ${SOURCE_DIR}/hersh.cpp ${HEADER_FILES})
 
 target_include_directories(hersh 
-  PUBLIC "${INCLUDE_DIR}")
+  PRIVATE "${PROJECT_SOURCE_DIR}")
 
 #-------------------------
 # Catch2 unittesting framework
+message(CHECK_START "Configuring Catch2")
+
 Include(FetchContent)
 
 FetchContent_Declare(
@@ -30,9 +32,9 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(runTests ${TEST_DIR}/test.cpp)
+add_executable(runTests ${SOURCE_DIR}/hersh.test.cpp)
 target_include_directories(runTests 
-  PRIVATE "${INCLUDE_DIR}")
+  PRIVATE "${SOURCE_DIR}")
 target_link_libraries(runTests PRIVATE Catch2::Catch2WithMain)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras) # Because we use FetchContent
@@ -40,5 +42,3 @@ include(CTest)
 include(Catch)
 catch_discover_tests(runTests)
 #-------------------------
-
-
