@@ -1,10 +1,10 @@
-#include <catch2/catch_test_macros.hpp>
-
 #include <hersh/reader.hpp>
 
 #include <iostream>
 #include <ostream>
 #include <sstream>
+
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Test Reader", "[Reader]") {
     std::istringstream istringstream("alon");
