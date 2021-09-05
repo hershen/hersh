@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
       break;
     }
 
-    const auto evaluatedLine = eval(readLine);
     print(evaluatedLine);
+    const auto evaluatedLine = evaluate(readLine);
   };
 
   return EXIT_SUCCESS;
