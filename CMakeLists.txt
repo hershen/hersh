@@ -32,9 +32,15 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(runTests ${SOURCE_DIR}/hersh.test.cpp)
+set(TESTS 
+  ${SOURCE_DIR}/evaluate.test.cpp
+  ${SOURCE_DIR}/printer.test.cpp
+  ${SOURCE_DIR}/reader.test.cpp 
+  )
+
+add_executable(runTests ${TESTS})
 target_include_directories(runTests 
-  PRIVATE "${SOURCE_DIR}")
+  PRIVATE "${PROJECT_SOURCE_DIR}")
 target_link_libraries(runTests PRIVATE Catch2::Catch2WithMain)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras) # Because we use FetchContent
