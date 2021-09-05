@@ -3,18 +3,45 @@
 #include <cstdlib>
 
 #include <iostream>
+#include <istream>
 #include <string>
 
 namespace hersh {
 
-std::string read(const std::string& prompt) {
-  std::string line;
+class Reader {
+public:
+  explicit Reader() : 
+    istream(std::cin),
+    ostream(std::cout)
+    {}
 
-  std::cout << prompt << " ";
+  explicit Reader(std::istream& istream, std::ostream& ostream) : 
+    istream(istream),
+    ostream(ostream)
+    {}
 
-  std::getline(std::cin, line);
-  return line;
-}
+  std::string read() const {
+    std::string line;
+
+    ostream << prompt;
+
+    std::getline(istream, line);
+    return line;
+  }
+
+  inline void setPrompt(const std::string& aPrompt) {
+    prompt = aPrompt;
+  }
+
+  inline std::string getPrompt() const {
+    return prompt;
+  }
+
+private:
+  std::istream& istream;
+  std::ostream& ostream;
+  std::string prompt;
+};
 
 } // namepace hersh
 

@@ -13,9 +13,11 @@ bool isEOF() {
 }
 
 int main(int argc, char *argv[]) {
+  Reader reader;
+  reader.setPrompt(defaultPrompt);
 
   while(true) {
-    const auto readLine = read(defaultPrompt);
+    const auto readLine = reader.read();
     if(isEOF()) {
       std::cout << std::endl;
       break;
