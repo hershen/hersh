@@ -6,7 +6,7 @@
 
 using namespace hersh;
 
-const std::string defaultPrompt = "hersh";
+const std::string defaultPrompt = "hersh$ ";
 
 bool isEOF() {
   return std::cin.eof();
@@ -21,8 +21,9 @@ int main(int argc, char *argv[]) {
       break;
     }
 
-    print(evaluatedLine);
     const auto evaluatedLine = evaluate(readLine);
+    const auto lineToPrint = print(evaluatedLine);
+    std::cout << lineToPrint << "\n";
   };
 
   return EXIT_SUCCESS;
