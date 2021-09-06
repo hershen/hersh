@@ -28,11 +28,10 @@ set(FETCHCONTENT_QUIET off)
 set(FETCHCONTENT_BASE_DIR ${EXTERNAL_DIR}/Catch2)
 FetchContent_Declare(
   Catch2
-  GIT_SHALLOW    TRUE
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
 
-  # Catch2 main branch. It's better if this is some tag, but the latest v3.0.0-preview3 has a bug where './runTests --list-tests --verbosity quiet' shows additional lines which are (wrongly) interpreted as tests.
-  GIT_TAG        devel 
+  # Catch2 devel branch for 2021-09-02. v3.0.0-preview3 has a bug where './runTests --list-tests --verbosity quiet' shows additional lines which are (wrongly) interpreted as tests.
+  GIT_TAG        432d03d1aab8472a0813c34a7f0e2e1a2c585d22 
 )
 
 FetchContent_MakeAvailable(Catch2)
