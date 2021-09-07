@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+
 #include <iostream>
 #include <string>
 
@@ -14,5 +15,6 @@ std::string read(const std::string& prompt) {
   std::getline(std::cin, line);
   return line;
 }
-}
+
+} // namepace hersh
 
