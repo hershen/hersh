@@ -40,7 +40,7 @@ public:
 private:
   std::istream& istream;
   std::ostream& ostream;
-  std::string prompt;
+  std::string prompt = "hersh$ ";
 };
 
 } // namepace hersh

@@ -6,15 +6,12 @@
 
 using namespace hersh;
 
-const std::string defaultPrompt = "hersh$ ";
-
 bool isEOF() {
   return std::cin.eof();
 }
 
 int main(int argc, char *argv[]) {
   Reader reader;
-  reader.setPrompt(defaultPrompt);
 
   while(true) {
     const auto readLine = reader.read();

@@ -12,11 +12,11 @@ TEST_CASE("Test Reader", "[Reader]") {
 
     hersh::Reader reader(istringstream, ostringstream);
 
-    REQUIRE(reader.getPrompt() == "");
+    REQUIRE(reader.getPrompt() == "hersh$ ");
 
     SECTION("Test with default prompt") {
       REQUIRE(reader.read() == "alon");
-      REQUIRE(ostringstream.str() == "");
+      REQUIRE(ostringstream.str() == "hersh$ ");
     }
     
     SECTION("Test with non-default prompt") {
