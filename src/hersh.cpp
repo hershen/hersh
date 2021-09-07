@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include <src/evaluate.hpp>
-#include <src/printer.hpp>
-#include <src/reader.hpp>
+#include <evaluate.hpp>
+#include <printer.hpp>
+#include <reader.hpp>
 
 using namespace hersh;
 
