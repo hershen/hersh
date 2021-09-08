@@ -5,8 +5,8 @@
 
 namespace hersh {
 
-void print(const std::string& line) {
-  std::cout << line << std::endl;
+std::string print(const std::string& line) {
+  return line;
 }
 
 } // namepace hersh

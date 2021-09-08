@@ -1,28 +1,28 @@
 #include <iostream>
 
-#include <src/evaluate.hpp>
-#include <src/printer.hpp>
-#include <src/reader.hpp>
+#include <evaluate.hpp>
+#include <printer.hpp>
+#include <reader.hpp>
 
 using namespace hersh;
-
-const std::string defaultPrompt = "hersh";
 
 bool isEOF() {
   return std::cin.eof();
 }
 
 int main(int argc, char *argv[]) {
+  Reader reader;
 
   while(true) {
-    const auto readLine = read(defaultPrompt);
+    const auto readLine = reader.read();
     if(isEOF()) {
       std::cout << std::endl;
       break;
     }
 
-    const auto evaluatedLine = eval(readLine);
-    print(evaluatedLine);
+    const auto evaluatedLine = evaluate(readLine);
+    const auto lineToPrint = print(evaluatedLine);
+    std::cout << lineToPrint << "\n";
   };
 
   return EXIT_SUCCESS;
