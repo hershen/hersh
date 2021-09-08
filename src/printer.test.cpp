@@ -4,6 +4,10 @@
 
 TEST_CASE("Test printer", "[printer]") {
     
+  SECTION("Empty input") {
     REQUIRE(hersh::print("") == "");
+  }
+  SECTION("Non-empty input") {
     REQUIRE(hersh::print("something ") == "something ");
+  }
 }
