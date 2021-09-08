@@ -14,7 +14,7 @@ TEST_CASE("Test Reader", "[Reader]") {
 
     SECTION("Test with default prompt") {
       REQUIRE(reader.read() == "alon");
-      REQUIRE(ostringstream.str() == "hersh$ ");
+      REQUIRE(ostringstream.str() == reader.getPrompt());
     }
     
     SECTION("Test with non-default prompt") {
