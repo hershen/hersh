@@ -3,6 +3,7 @@
 #include <evaluate.hpp>
 #include <printer.hpp>
 #include <reader.hpp>
+#include <tree-sitter-wrapper.hpp>
 
 using namespace hersh;
 
@@ -11,6 +12,8 @@ bool isEOF() {
 }
 
 int main() {
+
+  TreeSitter ts;
 
   Reader reader;
 
