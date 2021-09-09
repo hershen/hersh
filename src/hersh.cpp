@@ -10,7 +10,8 @@ bool isEOF() {
   return std::cin.eof();
 }
 
-int main(int argc, char *argv[]) {
+int main() {
+
   Reader reader;
 
   while(true) {
