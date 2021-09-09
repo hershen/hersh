@@ -33,6 +33,9 @@ FetchContent_Declare(
 
   # Catch2 devel branch for 2021-09-02. v3.0.0-preview3 has a bug where './runTests --list-tests --verbosity quiet' shows additional lines which are (wrongly) interpreted as tests.
   GIT_TAG        432d03d1aab8472a0813c34a7f0e2e1a2c585d22 
+
+  GIT_PROGRESS   True
+
 )
 
 FetchContent_MakeAvailable(Catch2)
