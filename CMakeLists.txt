@@ -9,6 +9,7 @@ set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(EXTERNAL_DIR ${PROJECT_SOURCE_DIR}/external)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
+add_compile_options(-Wall -Wextra -pedantic -O3)
 
 set(HEADER_FILES ${SOURCE_DIR}/reader.hpp ${SOURCE_DIR}/evaluate.hpp ${SOURCE_DIR}/printer.hpp)
 
