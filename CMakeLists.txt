@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
 
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16") 
+  cmake_policy(SET CMP0097 NEW) #Don't download git submodules if GIT_SUBMODULES is empty
+endif()
+
 project(hersh)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -11,12 +15,79 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 add_compile_options(-Wall -Wextra -pedantic -O3)
 
+include(ExternalProject)
+
+#-------------------------
+# tree-sitter
+message(CHECK_START "Configuring tree-sitter")
+
+ExternalProject_Add(tree-sitter
+  GIT_REPOSITORY https://github.com/tree-sitter/tree-sitter
+  GIT_SHALLOW    True
+  GIT_TAG        v0.20.0
+  GIT_PROGRESS   True
+  
+  PREFIX ${EXTERNAL_DIR}/tree-sitter
+  CONFIGURE_COMMAND ""
+  BUILD_IN_SOURCE   True #Because we're running tree-sitter's Makefile, which is in the source directory.
+  INSTALL_COMMAND   ""
+)
+
+ExternalProject_Get_Property(tree-sitter source_dir)
+set(tree-sitter_SOURCE_DIR ${source_dir})
+set(tree-sitter_INCLUDE_DIR ${tree-sitter_SOURCE_DIR}/lib/include)
+
+message(CHECK_START "Finished configuring tree-sitter")
+#-------------------------
+
+#-------------------------
+# tree-sitter-bash
+message(CHECK_START "Configuring tree-sitter-bash")
+
+ExternalProject_Add(tree-sitter-bash
+  GIT_REPOSITORY https://github.com/tree-sitter/tree-sitter-bash
+  GIT_TAG        v0.19.0
+  GIT_SHALLOW    True
+  GIT_SUBMODULES "" #Prevent download of bash-it, used for testing in tree-sitter-bash
+  GIT_PROGRESS   True
+
+  PREFIX ${EXTERNAL_DIR}/tree-sitter-bash
+
+  DEPENDS tree-sitter
+
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ${CMAKE_C_COMPILER} -c -O3 -I${tree-sitter_INCLUDE_DIR} <SOURCE_DIR>/src/parser.c
+  COMMAND ${CMAKE_CXX_COMPILER} -c -O3 -I${tree-sitter_INCLUDE_DIR} <SOURCE_DIR>/src/scanner.cc
+  INSTALL_COMMAND ""
+)
+
+ExternalProject_Get_Property(tree-sitter-bash binary_dir)
+set(tree-sitter-bash_BINARY_DIR ${binary_dir})
+
+message(CHECK_START "Finished configuring tree-sitter-bash")
+#-------------------------
+
+add_library(libtree-sitter-bash OBJECT IMPORTED)
+set_target_properties(libtree-sitter-bash
+                      PROPERTIES IMPORTED_OBJECTS "${tree-sitter-bash_BINARY_DIR}/parser.o;${tree-sitter-bash_BINARY_DIR}/scanner.o"
+)
+
 set(HEADER_FILES ${SOURCE_DIR}/reader.hpp ${SOURCE_DIR}/evaluate.hpp ${SOURCE_DIR}/printer.hpp)
 
-add_executable(hersh ${SOURCE_DIR}/hersh.cpp ${HEADER_FILES})
+add_executable(hersh ${SOURCE_DIR}/hersh.cpp
+  ${HEADER_FILES}
+  )
 
 target_include_directories(hersh 
-  PRIVATE ${SOURCE_DIR})
+  PRIVATE ${SOURCE_DIR}
+          ${tree-sitter_INCLUDE_DIR}
+)
+target_link_libraries(hersh
+  PRIVATE ${tree-sitter_SOURCE_DIR}/libtree-sitter.a
+          libtree-sitter-bash
+)
+
+add_dependencies(hersh tree-sitter tree-sitter-bash libtree-sitter-bash)
 
 #-------------------------
 # Catch2 unittesting framework
