@@ -56,17 +56,25 @@ ExternalProject_Add(tree-sitter-bash
   DEPENDS tree-sitter
 
   CONFIGURE_COMMAND ""
-  BUILD_COMMAND ${CMAKE_C_COMPILER} -c -O3 -I${tree-sitter_INCLUDE_DIR} <SOURCE_DIR>/src/parser.c
-  COMMAND ${CMAKE_CXX_COMPILER} -c -O3 -I${tree-sitter_INCLUDE_DIR} <SOURCE_DIR>/src/scanner.cc
-  INSTALL_COMMAND ""
+  BUILD_COMMAND     ""
+  INSTALL_COMMAND   ""
 )
 
+ExternalProject_Get_Property(tree-sitter-bash source_dir)
+set(tree-sitter-bash_SOURCE_DIR ${source_dir})
 ExternalProject_Get_Property(tree-sitter-bash binary_dir)
 set(tree-sitter-bash_BINARY_DIR ${binary_dir})
 
 message(CHECK_START "Finished configuring tree-sitter-bash")
 #-------------------------
 
+#Compile tree-sitter-bash parser.c and scanner.cc into object files
+add_custom_command(
+  OUTPUT ${tree-sitter-bash_BINARY_DIR}/parser.o ${tree-sitter-bash_BINARY_DIR}/scanner.o
+  COMMAND ${CMAKE_C_COMPILER} -c -O3 -I${tree-sitter_INCLUDE_DIR} ${tree-sitter-bash_SOURCE_DIR}/src/parser.c -o ${tree-sitter-bash_BINARY_DIR}/parser.o
+  COMMAND ${CMAKE_CXX_COMPILER} -c -O3 -I${tree-sitter_INCLUDE_DIR} ${tree-sitter-bash_SOURCE_DIR}/src/scanner.cc -o ${tree-sitter-bash_BINARY_DIR}/scanner.o
+  DEPENDS ${tree-sitter-bash_SOURCE_DIR}/src/parser.c ${tree-sitter-bash_SOURCE_DIR}/src/scanner.cc
+  )
 add_library(libtree-sitter-bash OBJECT IMPORTED)
 set_target_properties(libtree-sitter-bash
                       PROPERTIES IMPORTED_OBJECTS "${tree-sitter-bash_BINARY_DIR}/parser.o;${tree-sitter-bash_BINARY_DIR}/scanner.o"
@@ -115,7 +123,7 @@ set(TESTS
   ${SOURCE_DIR}/evaluate.test.cpp
   ${SOURCE_DIR}/printer.test.cpp
   ${SOURCE_DIR}/reader.test.cpp 
-  )
+)
 
 add_executable(runTests ${TESTS})
 target_include_directories(runTests 
