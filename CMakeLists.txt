@@ -13,6 +13,9 @@ set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(EXTERNAL_DIR ${PROJECT_SOURCE_DIR}/external)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
+# Output compile commands to file
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 add_compile_options(-Wall -Wextra -pedantic -O3)
 
 include(ExternalProject)
