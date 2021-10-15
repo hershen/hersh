@@ -13,7 +13,11 @@ bool isEOF() {
 
 int main() {
 
-  TreeSitter ts;
+  tree_sitter::Parser parser;
+  
+  const tree_sitter::Tree tree = parser.parse("ls -la");
+  std::cout << tree.stringify() << std::endl;
+
 
   Reader reader;
 

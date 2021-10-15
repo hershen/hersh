@@ -1,54 +1,80 @@
 #include <tree_sitter/api.h>
 
+#include <fcntl.h>
+#include <unistd.h>
+
 #include <iostream>
 
-namespace hersh {
+namespace tree_sitter {
 extern "C" {
     TSLanguage *tree_sitter_bash();
 }
 
-class TreeSitterTree {
+class Tree {
  public:
-  explicit TreeSitterTree(TSTree* tree) :
+  explicit Tree(TSTree* tree) :
     tree_(tree) {}
-  ~TreeSitterTree() {
+  ~Tree() {
     ts_tree_delete(tree_);
+  }
+
+  std::string stringify() const {
+    TSNode root_node = ts_tree_root_node(tree_);
+
+    std::cout << ts_node_type(root_node) << std::endl;
+    std::cout << "named: " << ts_node_is_named(root_node) << std::endl;
+    std::cout << "Number of children: " << ts_node_child_count(root_node) << std::endl;
+    std::cout << "Number of named children: " << ts_node_named_child_count(root_node) << std::endl;
+
+    /* TSNode ts_node_next_named_sibling(TSNode); */
+    /* TSNode ts_node_prev_named_sibling(TSNode); */
+
+    const auto c_str = ts_node_string(root_node);
+    std::string string = c_str;
+    free(c_str);
+    return string;
   }
 
  private:
   TSTree* tree_;
-
 };
 
-class TreeSitter {
+class Parser {
  public:
-  TreeSitter() {
-
+  Parser() {
     parser_ = ts_parser_new();
-
     ts_parser_set_language(parser_, tree_sitter_bash());
+    ts_parser_set_timeout_micros(parser_, 10'000'000'000);
+    file_descriptor_ = open("GfgTest.dot", O_WRONLY , O_CREAT | O_TRUNC | O_SYNC);
+    ts_parser_print_dot_graphs(parser_, file_descriptor_);
 
-
-    /* TSNode root_node = ts_tree_root_node(tree); */
-
-    /* std::string string = ts_node_string(root_node); */
-    /* std::cout << string << std::endl; */
+    std::cout << "Bash has " << ts_language_symbol_count(tree_sitter_bash()) << " node types" << std::endl;
+    for (int i=0; i< ts_language_symbol_count(tree_sitter_bash()); ++i) {
+        std::cout << "Symbol " << i << ": " << ts_language_symbol_name(tree_sitter_bash(), i) << "\n";
+      }
+    std::cout << "Bash has " << ts_language_field_count(tree_sitter_bash()) << " field names" << std::endl;
+    for (int i=1; i< ts_language_field_count(tree_sitter_bash());  ++i) {
+        std::cout << "Field " << i << ": " << ts_language_field_name_for_id(tree_sitter_bash(), i) << "\n";
+      }
   }
-  ~TreeSitter() {
+
+  ~Parser() {
     ts_parser_delete(parser_);
+    close(file_descriptor_);
   }
 
-  TreeSitterTree parse(const std::string& string) const {
-    return TreeSitterTree(ts_parser_parse_string(
+  Tree parse(const std::string& string) const {
+    return Tree(ts_parser_parse_string(
                           parser_,
                           NULL,
                           string.c_str(),
                           string.size()
                         )
-        );
+        ); 
 
   }
  private:
+  int file_descriptor_;
   TSParser* parser_;
 };
 }
