@@ -10,5 +10,5 @@ jobs:
       - name: build
         run: cmake --build build -j2
       - name: test
-        run: ctest --test-dir build
+        run: ctest --test-dir build --output-on-failure
 
