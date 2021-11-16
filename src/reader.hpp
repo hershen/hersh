@@ -29,11 +29,11 @@ public:
     return line;
   }
 
-  inline void setPrompt(const std::string& aPrompt) {
+  void setPrompt(const std::string& aPrompt) {
     prompt = aPrompt;
   }
 
-  inline std::string getPrompt() const {
+  std::string getPrompt() const {
     return prompt;
   }
 
