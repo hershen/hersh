@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <istream>
+#include <ostream>
 #include <string>
 
 namespace hersh {
@@ -11,13 +12,12 @@ namespace hersh {
 class Reader {
 public:
   explicit Reader() : 
-    istream(std::cin),
-    ostream(std::cout)
+    Reader(std::cin, std::cout)
     {}
 
   explicit Reader(std::istream& istream, std::ostream& ostream) : 
-    istream(istream),
-    ostream(ostream)
+    istream(istream.rdbuf()),
+    ostream(ostream.rdbuf())
     {}
 
   std::string read() const {
@@ -29,17 +29,17 @@ public:
     return line;
   }
 
-  inline void setPrompt(const std::string& aPrompt) {
+  void setPrompt(const std::string& aPrompt) {
     prompt = aPrompt;
   }
 
-  inline std::string getPrompt() const {
+  std::string getPrompt() const {
     return prompt;
   }
 
 private:
-  std::istream& istream;
-  std::ostream& ostream;
+  mutable std::istream istream;
+  mutable std::ostream ostream;
   std::string prompt = "hersh$ ";
 };
 
