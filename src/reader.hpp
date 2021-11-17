@@ -16,8 +16,8 @@ public:
     {}
 
   explicit Reader(std::istream& istream, std::ostream& ostream) : 
-    istream(istream),
-    ostream(ostream)
+    istream(istream.rdbuf()),
+    ostream(ostream.rdbuf())
     {}
 
   std::string read() const {
@@ -38,8 +38,8 @@ public:
   }
 
 private:
-  std::istream& istream;
-  std::ostream& ostream;
+  mutable std::istream istream;
+  mutable std::ostream ostream;
   std::string prompt = "hersh$ ";
 };
 
