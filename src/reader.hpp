@@ -12,8 +12,7 @@ namespace hersh {
 class Reader {
 public:
   explicit Reader() : 
-    istream(std::cin),
-    ostream(std::cout)
+    Reader(std::cin, std::cout)
     {}
 
   explicit Reader(std::istream& istream, std::ostream& ostream) : 
