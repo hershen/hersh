@@ -1,4 +1,6 @@
-#include <tree_sitter/api.h>
+extern "C" {
+  #include <tree_sitter/api.h>
+}
 
 #include <fcntl.h>
 #include <unistd.h>
