@@ -15,7 +15,7 @@ int main() {
 
   tree_sitter::Parser parser;
   
-  const tree_sitter::Tree tree = parser.parse("ls -la");
+  const tree_sitter::Tree tree = parser.parse("for");
   std::cout << tree.stringify() << std::endl;
 
 
