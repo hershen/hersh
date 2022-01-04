@@ -22,6 +22,18 @@ public:
     ts_tree_delete(tree_);
   }
 
+  Tree(const Tree& other) :
+    tree_(ts_tree_copy(other.tree_))
+  {}
+
+  Tree& operator=(const Tree& other)
+  {
+    if (this == &other) return *this;
+    ts_tree_delete(tree_);
+    tree_ = ts_tree_copy(other.tree_);
+    return *this;
+  }
+
   std::string stringify() const {
     TSNode root_node = ts_tree_root_node(tree_);
 
@@ -67,6 +79,18 @@ class Parser {
   ~Parser() {
     ts_parser_delete(parser_);
     close(file_descriptor_);
+  }
+
+  Parser(const Parser& other) :
+    parser_(other.parser_)
+  {}
+
+  Parser& operator=(const Parser& other)
+  {
+    if (this == &other) return *this;
+    ts_parser_delete(parser_);
+    parser_ = other.parser_;
+    return *this;
   }
 
   Tree parse(const std::string& string) const {
