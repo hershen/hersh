@@ -14,9 +14,10 @@ extern "C" {
 }
 
 class Tree {
- public:
+public:
   explicit Tree(TSTree* tree) :
     tree_(tree) {}
+
   ~Tree() {
     ts_tree_delete(tree_);
   }
@@ -38,7 +39,7 @@ class Tree {
     return string;
   }
 
- private:
+private:
   TSTree* tree_;
 };
 
