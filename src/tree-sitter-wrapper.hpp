@@ -66,14 +66,6 @@ class Parser {
     file_descriptor_ = open("GfgTest.dot", O_WRONLY , O_CREAT | O_TRUNC | O_SYNC);
     ts_parser_print_dot_graphs(parser_, file_descriptor_);
 
-    std::cout << "Bash has " << ts_language_symbol_count(tree_sitter_bash()) << " node types" << std::endl;
-    for (int i=0; i< ts_language_symbol_count(tree_sitter_bash()); ++i) {
-        std::cout << "Symbol " << i << ": " << ts_language_symbol_name(tree_sitter_bash(), i) << "\n";
-      }
-    std::cout << "Bash has " << ts_language_field_count(tree_sitter_bash()) << " field names" << std::endl;
-    for (int i=1; i< ts_language_field_count(tree_sitter_bash());  ++i) {
-        std::cout << "Field " << i << ": " << ts_language_field_name_for_id(tree_sitter_bash(), i) << "\n";
-      }
   }
 
   ~Parser() {
@@ -103,6 +95,23 @@ class Parser {
         ); 
 
   }
+
+  // Print a list of bash language symbols to cout
+  void printSymbols() const {
+    std::cout << "Bash has " << ts_language_symbol_count(tree_sitter_bash()) << " node types" << std::endl;
+    for (int i=0; i< ts_language_symbol_count(tree_sitter_bash()); ++i) {
+      std::cout << "Symbol " << i << ": " << ts_language_symbol_name(tree_sitter_bash(), i) << "\n";
+    }
+  }
+
+  // Print a list of bash language fields to cout
+  void printFields() const {
+    std::cout << "Bash has " << ts_language_field_count(tree_sitter_bash()) << " field names" << std::endl;
+    for (int i=1; i< ts_language_field_count(tree_sitter_bash());  ++i) {
+      std::cout << "Field " << i << ": " << ts_language_field_name_for_id(tree_sitter_bash(), i) << "\n";
+    }
+  }
+
  private:
   int file_descriptor_;
   TSParser* parser_;
