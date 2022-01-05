@@ -3,6 +3,7 @@ extern "C" {
 }
 
 #include <cassert>
+#include <exception>
 #include <fcntl.h>
 #include <iostream>
 #include <unistd.h>
@@ -11,6 +12,21 @@ namespace tree_sitter {
 extern "C" {
     TSLanguage *tree_sitter_bash();
 }
+
+class parsingError : public std::exception
+{
+
+public:
+  explicit parsingError(const std::string& message) :
+    message_(message) {}
+
+	const char * what () const throw () {
+    return message_.c_str();
+  }
+
+private:
+  std::string message_;
+};
 
 class Tree {
 public:
@@ -85,14 +101,18 @@ class Parser {
   }
 
   Tree parse(const std::string& string) const {
-    return Tree(ts_parser_parse_string(
+    const auto parsed = ts_parser_parse_string(
                           parser_,
                           NULL,
                           string.c_str(),
                           string.size()
-                        )
-        ); 
+                          );
 
+    if(!parsed) {
+      throw parsingError("Failed to parse string: " + string); 
+    }
+
+    return Tree(parsed);
   }
 
   // Print a list of bash language symbols to cout
