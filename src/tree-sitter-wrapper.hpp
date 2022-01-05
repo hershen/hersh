@@ -78,7 +78,7 @@ class Parser {
     const bool success = ts_parser_set_language(parser_, tree_sitter_bash());
     assert(success && "Could not set the parser language correctly. There was a version mismatch.");
 
-    ts_parser_set_timeout_micros(parser_, 10'000'000'000);
+    ts_parser_set_timeout_micros(parser_, 1'000'000'000);
     file_descriptor_ = open("GfgTest.dot", O_WRONLY , O_CREAT | O_TRUNC | O_SYNC);
     ts_parser_print_dot_graphs(parser_, file_descriptor_);
 
