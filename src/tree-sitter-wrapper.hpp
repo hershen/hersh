@@ -89,10 +89,6 @@ class Parser {
     close(file_descriptor_);
   }
 
-  Parser(const Parser& other) :
-    parser_(other.parser_)
-  {}
-
   Parser& operator=(const Parser& other)
   {
     if (this == &other) return *this;
