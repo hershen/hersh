@@ -2,11 +2,10 @@ extern "C" {
   #include <tree_sitter/api.h>
 }
 
-#include <fcntl.h>
-#include <unistd.h>
-
 #include <cassert>
+#include <fcntl.h>
 #include <iostream>
+#include <unistd.h>
 
 namespace tree_sitter {
 extern "C" {
